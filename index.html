@@ -1,0 +1,1014 @@
+<style>
+  body {
+    background-color: #000;
+  }
+
+  .section-to-hide {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* position: fixed; */
+    /* top: 0; */
+    /* left: 0; */
+    z-index: 1;
+    /* Lower z-index */
+    opacity: 1;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+
+  }
+
+  .hidden {
+    opacity: 0;
+    visibility: hidden;
+    display: none;
+  }
+
+  .main-container1 {
+    width: 100%;
+    height: 100vh;
+    overflow: visible;
+    position: sticky;
+    top: 0;
+  }
+
+  .slides-wrapper {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 100%;
+    width: 300%;
+    /* 100% for each slide */
+  }
+
+  .slide {
+    min-width: 100vw;
+    height: 80vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .slide video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    display: block;
+    /* Ensure video is visible */
+  }
+
+  .slide-content {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    color: white;
+    line-height: 1.1;
+    box-shadow: 0 0 45px 45px rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.4);
+
+  }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 1);
+    justify-content: center;
+    align-items: center;
+    z-index: 99999999999999999999999999999999999999999999999999999999999;
+    overflow: visible;
+    /* Prevent scrolling */
+  }
+
+  .overlay iframe {
+    width: 95%;
+    height: 80%;
+
+  }
+
+  .next-section {
+    /* height: 100vh; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+  }
+
+  #close-overlay {
+    color: #946a27;
+    border: none;
+    font-size: 40px;
+    cursor: pointer;
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 10px;
+    border-radius: 5px;
+    background: transparent;
+  }
+
+  .slide-title1 {
+    color: #946a27;
+    font-size: 24px;
+    font-family: nohemi !important;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+
+
+  }
+
+  .slide-title2 {
+    color: #fff;
+    font-size: 24px;
+    font-family: nohemi !important;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+
+  }
+
+  .slide-title3 {
+    color: #fff;
+    font-size: 17px;
+    font-family: nohemi !important;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-weight: 500;
+  }
+
+
+  .videoicon {
+    position: absolute;
+    bottom: 20px;
+    right: 50px;
+    transition: transform 0.5s ease;
+    animation: flash 1s infinite;
+    transform: rotate(30deg);
+    width: 50px !important;
+  }
+
+  .videoicon:hover {
+    transform: rotate(0deg);
+  }
+
+  @keyframes flash {
+    0% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.5;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .cta {
+    text-decoration: none;
+  }
+
+  /******************IMAGE GRID**********************/
+
+  @keyframes slideIn {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+
+  .container1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding-bottom: 60px;
+    /* Add padding to account for filter buttons */
+    background-color: #000;
+
+  }
+
+  .filter-container1 {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: transparent;
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .filter-container1.visible {
+    opacity: 1;
+  }
+
+  .filter-button {
+    margin: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #000;
+    color: white;
+    border: 1px solid #b67434;
+    border-radius: 5px;
+  }
+
+  .filter-button:hover {
+    background-color: #946a27;
+  }
+
+  .filter-button.active {
+    background-color: #946a27;
+    border-color: #946a27;
+  }
+
+
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+
+  }
+
+  .image-item {
+    position: relative;
+    width: 100%;
+    display: none;
+    overflow: hidden;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+
+
+  .image-item img {
+    width: 100%;
+    height: auto;
+  }
+
+
+
+
+  .image-item .hover-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .image-item:hover .hover-video {
+    opacity: 1;
+  }
+
+  .image-item:hover img {
+    opacity: 0;
+  }
+
+
+
+
+  .overlay9 {
+    position: absolute;
+    bottom: 0px;
+    left: 5px;
+    //  background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px 10px;
+    border-radius: 5px;
+    // box-shadow: 0 0 15px 15px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  .image-item:hover .overlay9 {
+    opacity: 1;
+    cursor: pointer;
+  }
+
+  .title {
+    font-size: 20px;
+    font-family: nohemi;
+    font-weight: 700;
+  }
+
+  .subtitle {
+    font-family: nohemi;
+    font-weight: 500;
+    font-size: 17px;
+  }
+
+  .video-overlay9 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .video-overlay9 iframe {
+    width: 100%;
+    height: 80%;
+    border: none;
+  }
+
+  .video-overlay9.active {
+    display: flex;
+    background-color: #000;
+  }
+
+  .video-overlay9 .close-btn9 {
+    color: #b67434;
+    border: none;
+    font-size: 40px;
+    cursor: pointer;
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 10px;
+    border-radius: 5px;
+    background: transparent;
+  }
+
+  .scrolldisable {
+    height: 100vh;
+    overflow-y: hidden;
+  }
+</style>
+
+<div id="parent" class="scrolldisable">
+  <div class="section-to-hide" id="sectionToHide">
+    <div class="main-container1">
+      <div class="slides-wrapper">
+        <div class="slide">
+          <video id="video1" autoplay loop muted controlsList="nodownload nofullscreen noremoteplayback">
+            <source
+              src="https://jagnetics.com/wp-content/uploads/2024/07/Phasna-Nahi-Deeking-x-Bandzo3rd-_-The-Jagnetics-_-Official-Music-Video-0_1.mp4"
+              type="video/mp4">
+          </video>
+          <div class="slide-content">
+            <a href="#" class="cta" onclick="showOverlay(event, 'https://www.youtube.com/embed/l4bu12NhnIQ')">
+
+              <span class="slide-title1">Phasna Nahi - <span class="slide-title2">Deeking & Bandzo</span></span>
+            </a>
+            <br />
+            <span class="slide-title3">Music Video / Post Production</span>
+          </div>
+          <a href="#" class="cta" onclick="showOverlay(event, 'https://www.youtube.com/embed/l4bu12NhnIQ')">
+            <img src="https://jagnetics.com/wp-content/uploads/2024/06/03B-Jagnetics-2024-Submark-Logo.png" width="50px"
+              class="videoicon">
+
+          </a>
+        </div>
+        <div class="slide">
+          <video id="video2" autoplay loop muted controlsList="nodownload nofullscreen noremoteplayback">
+            <source src="https://jagnetics.com/wp-content/uploads/2024/07/Off-Beat-_-Jagnetics-New.mp4"
+              type="video/mp4">
+          </video>
+          <div class="slide-content">
+            <a href="#" class="cta" onclick="showOverlay(event, 'https://www.youtube.com/embed/7FD5-eDYt3M')">
+              <span class="slide-title1">Off Beat - <span class="slide-title2">Seedhe Maut x Hurricane</span></span>
+            </a>
+            <br />
+            <span class="slide-title3">Jagnetics Vision</span>
+          </div>
+          <a href="#" class="cta" onclick="showOverlay(event, 'https://www.youtube.com/embed/7FD5-eDYt3M')">
+            <img src="https://jagnetics.com/wp-content/uploads/2024/06/03B-Jagnetics-2024-Submark-Logo.png" width="50px"
+              class="videoicon">
+          </a>
+        </div>
+        <div class="slide">
+          <video id="video3" autoplay loop muted controlsList="nodownload nofullscreen noremoteplayback">
+            <source src="https://jagnetics.com/wp-content/uploads/2024/07/Itni-Shakti-Jagntics-NEW.mp4"
+              type="video/mp4">
+          </video>
+          <div class="slide-content">
+            <a href="#" class="cta" onclick="showOverlay(event, 'https://www.youtube.com/embed/7FD5-eDYt3M')">
+              <span class="slide-title1">Itni Shakti - <span class="slide-title2">Paradox</span></span>
+            </a>
+            <br />
+            <span class="slide-title3">Music Video / Post Production</span>
+          </div>
+          <a href="#" class="cta" onclick="showOverlay(event, 'https://www.youtube.com/embed/7FD5-eDYt3M')">
+            <img src="https://jagnetics.com/wp-content/uploads/2024/06/03B-Jagnetics-2024-Submark-Logo.png" width="50px"
+              class="videoicon">
+          </a>
+        </div>
+        <div class="slide" style="position: relative;">
+          <div id="trigger" style="display: flex; top: 50%; bottom: 50%; left: 50%; right: 50%; height: 100px; width: 100px; position: absolute;"></div>
+          <video id="video4" autoplay loop muted controlsList="nodownload nofullscreen noremoteplayback">
+            <source src="https://jagnetics.com/wp-content/uploads/2024/07/Oh-Hi-Jagnetics.mp4" type="video/mp4">
+          </video>
+          <div class="slide-content">
+            <a href="#" class="cta" onclick="showOverlay(event, 'https://www.youtube.com/embed/RmEGv9hBi3M')">
+              <span class="slide-title1">Oh Hi - <span class="slide-title2">AB & Kayan</span></span>
+            </a>
+            <br />
+            <span class="slide-title3">Music Video / Post Production</span>
+          </div>
+          <a href="#" class="cta" onclick="showOverlay(event, 'https://www.youtube.com/embed/RmEGv9hBi3M')">
+            <img src="https://jagnetics.com/wp-content/uploads/2024/06/03B-Jagnetics-2024-Submark-Logo.png" width="50px"
+              class="videoicon">
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="next-section">
+
+    <div class="overlay" id="overlay">
+      <iframe id="overlayVideo" frameborder="0" allowfullscreen></iframe>
+      <button id="close-overlay">X</button>
+    </div>
+
+  </div>
+
+  <div class="container1" id="imageSection">
+    <br />
+    <h2 style="color:white; font-size:24px; letter-spacing:4px;"> THE JAGNETICS SHOWCASE</h2>
+    <div class="image-grid">
+      <div class="image-item music-video" data-title="Music Video 1" data-subtitle="Music Video"
+        data-youtube="https://www.youtube.com/embed/l4bu12NhnIQ">
+        <img src="https://jagnetics.com/wp-content/uploads/2024/07/Phasna-Nahi.jpg" alt="Music Video 1">
+        <video src="https://cdn.shopify.com/videos/c/o/v/cac8cd7e09514ef6bcf74398fcd59658.mp4" class="hover-video" muted
+          autoplay loop>
+        </video>
+
+        <div class="overlay9">
+          <div class="title">PHASNA NAHI</div>
+          <div class="subtitle">MUSIC VIDEO</div>
+        </div>
+      </div>
+
+
+
+
+      <div class="image-item music-video" data-title="Music Video 2" data-subtitle="Music Video"
+        data-youtube="https://www.youtube.com/embed/l4bu12NhnIQ">
+        <img src="https://jagnetics.com/wp-content/uploads/2024/07/Itni-Shakti.jpg" alt="Music Video 1">
+        <video src="https://cdn.shopify.com/videos/c/o/v/9003f7a138f8473bbcc51a687b287f75.mp4" class="hover-video" muted
+          autoplay loop>
+        </video>
+
+        <div class="overlay9">
+          <div class="title">ITNI SHAKTI</div>
+          <div class="subtitle">MUSIC VIDEO</div>
+        </div>
+      </div>
+
+
+
+
+      <div class="image-item music-video" data-title="Music Video 3" data-subtitle="Music Video"
+        data-youtube="https://www.youtube.com/embed/l4bu12NhnIQ">
+        <img src="https://jagnetics.com/wp-content/uploads/2024/07/Oh-Hi.jpg" alt="Music Video 1">
+        <video src="https://cdn.shopify.com/videos/c/o/v/f4210b6a7f614c0ea7ec234f8a95551b.mp4" class="hover-video" muted
+          autoplay loop>
+        </video>
+
+        <div class="overlay9">
+          <div class="title">OH HI</div>
+          <div class="subtitle">MUSIC VIDEO</div>
+        </div>
+      </div>
+
+
+
+      <div class="image-item music-video" data-title="Music Video 4" data-subtitle="Music Video"
+        data-youtube="https://www.youtube.com/embed/l4bu12NhnIQ">
+        <img src="https://jagnetics.com/wp-content/uploads/2024/07/Offbeat.jpg" alt="Music Video 1">
+        <video src="https://cdn.shopify.com/videos/c/o/v/9093664ac2b344b6bc153391a1918a91.mp4" class="hover-video" muted
+          autoplay loop>
+        </video>
+
+        <div class="overlay9">
+          <div class="title">OFFBEAT</div>
+          <div class="subtitle">JAGNETICS VISION</div>
+        </div>
+      </div>
+
+
+
+      <div class="image-item music-video" data-title="Music Video 5" data-subtitle="Music Video"
+        data-youtube="https://www.youtube.com/embed/l4bu12NhnIQ">
+        <img src="https://jagnetics.com/wp-content/uploads/2024/07/Shanna-ban.jpg" alt="Music Video 1">
+        <video src="https://cdn.shopify.com/videos/c/o/v/85fb4b409f204f088e4f4c12e903861b.mp4" class="hover-video" muted
+          autoplay loop>
+        </video>
+
+        <div class="overlay9">
+          <div class="title">SHANNA BAN</div>
+          <div class="subtitle">MUSIC VIDEO</div>
+        </div>
+      </div>
+
+
+
+      <div class="image-item music-video" data-title="Music Video 6" data-subtitle="Music Video"
+        data-youtube="https://www.youtube.com/embed/l4bu12NhnIQ">
+        <img src="https://jagnetics.com/wp-content/uploads/2024/07/xtraordinary.jpg" alt="Music Video 1">
+        <video src="https://cdn.shopify.com/videos/c/o/v/1ae7c4a8fbf94fba91c82cae52fad532.mp4" class="hover-video" muted
+          autoplay loop>
+        </video>
+
+        <div class="overlay9">
+          <div class="title">XTRAORDINARY</div>
+          <div class="subtitle">JAGNETICS VISION</div>
+        </div>
+      </div>
+
+
+
+
+      <div class="image-item music-video" data-title="Music Video 7" data-subtitle="Music Video"
+        data-youtube="https://www.youtube.com/embed/l4bu12NhnIQ">
+        <img src="https://jagnetics.com/wp-content/uploads/2024/07/Chai-aur-Tum.jpg" alt="Music Video 1">
+        <video src="https://cdn.shopify.com/videos/c/o/v/dfc165303f31464384831ee5e818cad7.mp4" class="hover-video" muted
+          autoplay loop>
+        </video>
+
+        <div class="overlay9">
+          <div class="title">CHAI AUR TUM</div>
+          <div class="subtitle">MUSIC VIDEO</div>
+        </div>
+      </div>
+
+
+
+
+      <div class="image-item music-video" data-title="Music Video 8" data-subtitle="Music Video"
+        data-youtube="https://www.youtube.com/embed/l4bu12NhnIQ">
+        <img src="https://jagnetics.com/wp-content/uploads/2024/07/People-dont-chantge.jpg" alt="Music Video 1">
+        <video src="https://cdn.shopify.com/videos/c/o/v/d765b3d252584b48986ec2ba4ff3976f.mp4" class="hover-video" muted
+          autoplay loop>
+        </video>
+
+        <div class="overlay9">
+          <div class="title">PEOPLE DON'T CHANGE</div>
+          <div class="subtitle">JAGNETICS VISION</div>
+        </div>
+      </div>
+
+
+
+      <div class="image-item music-video" data-title="Music Video 9" data-subtitle="Music Video"
+        data-youtube="https://www.youtube.com/embed/l4bu12NhnIQ">
+        <img src="https://jagnetics.com/wp-content/uploads/2024/07/Chal-na-aage-kafi.jpg" alt="Music Video 1">
+        <video src="https://cdn.shopify.com/videos/c/o/v/e43a37b42c11457aa764424ec5d2a5d5.mp4" class="hover-video" muted
+          autoplay loop>
+        </video>
+
+        <div class="overlay9">
+          <div class="title">CHAL NA AAGE KAAFI</div>
+          <div class="subtitle">MUSIC VIDEO</div>
+        </div>
+      </div>
+
+
+
+      <div class="image-item music-video" data-title="Music Video 10" data-subtitle="Music Video"
+        data-youtube="https://www.youtube.com/embed/l4bu12NhnIQ">
+        <img src="https://jagnetics.com/wp-content/uploads/2024/07/True-Story.jpg" alt="Music Video 1">
+        <video src="https://cdn.shopify.com/videos/c/o/v/b23243de291e418ba1db6eb0dbcf06f2.mp4" class="hover-video" muted
+          autoplay loop>
+        </video>
+
+        <div class="overlay9">
+          <div class="title">TRUE STORY</div>
+          <div class="subtitle">MUSIC VIDEO</div>
+        </div>
+      </div>
+
+
+
+      <div class="image-item music-video" data-title="Music Video 11" data-subtitle="Music Video"
+        data-youtube="https://www.youtube.com/embed/l4bu12NhnIQ">
+        <img src="https://jagnetics.com/wp-content/uploads/2024/07/Fomo.jpg" alt="Music Video 1">
+        <video src="https://cdn.shopify.com/videos/c/o/v/b84aec1245aa433bb0fa8b27a20259f7.mp4" class="hover-video" muted
+          autoplay loop>
+        </video>
+
+        <div class="overlay9">
+          <div class="title">FOMO</div>
+          <div class="subtitle">MUSIC VIDEO</div>
+        </div>
+      </div>
+
+
+
+      <div class="image-item music-video" data-title="Music Video 12" data-subtitle="Music Video"
+        data-youtube="https://www.youtube.com/embed/l4bu12NhnIQ">
+        <img src="https://jagnetics.com/wp-content/uploads/2024/07/Faasi.jpg" alt="Music Video 1">
+        <video src="https://cdn.shopify.com/videos/c/o/v/44ad5adc98164244901855ac863486f7.mp4" class="hover-video" muted
+          autoplay loop>
+        </video>
+
+        <div class="overlay9">
+          <div class="title">FAASI</div>
+          <div class="subtitle">MUSIC VIDEO</div>
+        </div>
+      </div>
+
+
+
+
+      <div class="image-item commercial" data-title="Commercial 1" data-subtitle="Commercial"
+        data-youtube="https://www.youtube.com/embed/your-video-id">
+        <img src="https://jagnetics.com/wp-content/uploads/2024/07/Ajio.jpg" alt="Commercial 1">
+        <video src="https://jagnetics.com/wp-content/uploads/2024/07/ajio.mp4" class="hover-video" muted autoplay
+          loop></video>
+        <div class="overlay9">
+          <div class="title">AJIO</div>
+          <div class="subtitle">COMMERCIAL</div>
+        </div>
+      </div>
+      <div class="image-item commercial" data-title="Commercial 2" data-subtitle="Commercial">
+        <img src="https://jagnetics.com/wp-content/uploads/2024/07/Amazon.jpg" alt="Commercial 2">
+        <video src="https://jagnetics.com/wp-content/uploads/2024/07/Amazon.mp4" class="hover-video" muted
+          autoplay></video>
+
+        <div class="overlay9">
+          <div class="title">AMAZON</div>
+          <div class="subtitle">COMMERCIAL</div>
+        </div>
+      </div>
+
+
+      <div class="image-item commercial" data-title="Commercial 3" data-subtitle="Commercial">
+        <img src="https://jagnetics.com/wp-content/uploads/2024/07/Azorte.jpg" alt="Commercial 2">
+        <video src="https://jagnetics.com/wp-content/uploads/2024/07/azorte.mp4" class="hover-video" muted
+          autoplay></video>
+
+        <div class="overlay9">
+          <div class="title">AZORTE</div>
+          <div class="subtitle">COMMERCIAL</div>
+        </div>
+      </div>
+
+
+      <div class="image-item commercial" data-title="Commercial 4" data-subtitle="Commercial">
+        <img src="https://jagnetics.com/wp-content/uploads/2024/07/Jio.jpg" alt="Commercial 2">
+        <video src="https://jagnetics.com/wp-content/uploads/2024/07/jio.mp4" class="hover-video" muted
+          autoplay></video>
+
+        <div class="overlay9">
+          <div class="title">JIO</div>
+          <div class="subtitle">COMMERCIAL</div>
+        </div>
+      </div>
+
+
+
+      <div class="image-item short-film" data-title="Short Film 1" data-subtitle="Short Film">
+        <img src="https://jagnetics.com/wp-content/uploads/2024/07/Scoop-of-ignorance.jpg">
+
+        <video src="https://jagnetics.com/wp-content/uploads/2024/07/Scoop-of-Ignorance.mp4" class="hover-video" muted
+          autoplay></video>
+
+        <div class="overlay9">
+          <div class="title">SCOOP OF IGNORANCE</div>
+          <div class="subtitle">SHORT FILM</div>
+        </div>
+      </div>
+
+
+      <div class="image-item short-film" data-title="Short Film 2" data-subtitle="Short Film">
+        <img src="https://jagnetics.com/wp-content/uploads/2024/07/Zombie-ZOne.jpg">
+
+        <video src="https://jagnetics.com/wp-content/uploads/2024/07/Zombie-Zone.mp4" class="hover-video" muted
+          autoplay></video>
+
+        <div class="overlay9">
+          <div class="title">ZOMBIE ZONE</div>
+          <div class="subtitle">SHORT FILM</div>
+        </div>
+      </div>
+
+
+
+
+
+    </div>
+    <div class="filter-container1" id="filterContainer">
+      <button class="filter-button" onclick="filterImages('all')">All</button>
+      <button class="filter-button" onclick="filterImages('music-video')">Music Videos</button>
+      <button class="filter-button" onclick="filterImages('commercial')">Commercials</button>
+      <button class="filter-button" onclick="filterImages('short-film')">Short Films</button>
+    </div>
+  </div>
+
+
+
+  <!-- YouTube Video Overlay -->
+  <div class="video-overlay9" id="videoOverlay9">
+    <button class="close-btn9" onclick="closeVideo()">X</button>
+    <iframe id="youtubeVideo9" src="" allowfullscreen></iframe>
+  </div>
+
+
+</div>
+
+
+
+
+<script type="text/javascript">
+  let currentSlide = 0;
+  const slidesWrapper = document.querySelector('.slides-wrapper');
+  const totalSlides = document.querySelectorAll('.slide').length;
+  const overlay = document.getElementById('overlay');
+  const overlayVideo = document.getElementById('overlayVideo');
+  const sectionToHide = document.getElementById('sectionToHide');
+  let isScrolling = false;
+  const scrollThreshold = 100;
+  let scrollAccumulator = 0;
+
+  let lastScrollTime = 0;
+  const scrollCooldown = 1000;
+
+
+  // Touch event handling
+  let touchStartY = 0;
+
+  function handleTouchStart(event) {
+    touchStartY = event.touches[0].clientY;
+  }
+
+  function handleTouchMove(event) {
+    if (!touchStartY) return;
+
+    const touchEndY = event.touches[0].clientY;
+    const deltaY = touchStartY - touchEndY;
+
+    handleScroll({ deltaY: deltaY, preventDefault: () => { } });
+
+    touchStartY = null;
+  }
+
+  function handleScroll(event) {
+    event.preventDefault();
+
+    if (isScrolling) return;
+
+    isScrolling = true;
+    setTimeout(() => { isScrolling = false; }, scrollCooldown);
+
+    if (event.deltaY > 0) {
+      // Scrolling down
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updateSlidePosition();
+      } else {
+        // At last slide, allow scrolling to next section
+        // sectionToHide.classList.add('hidden');
+        window.removeEventListener('wheel', handleScroll);
+        enableNormalScrolling();
+      }
+    } else if (event.deltaY < 0) {
+      // Scrolling up
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlidePosition();
+      } else if (window.scrollY > 0) {
+        // Allow normal scrolling up when at the top of the content below
+        window.removeEventListener('wheel', handleScroll);
+        enableNormalScrolling();
+      }
+    }
+  }
+
+
+
+  function updateSlidePosition() {
+    slidesWrapper.style.transform = `translateX(-${currentSlide * 100}vw)`;
+    manageVideoPlayback();
+  }
+
+  function enableNormalScrolling() {
+    document.body.style.overflow = 'auto';
+  }
+
+  function disableNormalScrolling() {
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Re-enable carousel when scrolling to the top
+  window.addEventListener('scroll', () => {
+    if (window.scrollY === 0) {
+      sectionToHide.classList.remove('hidden');
+      window.addEventListener('wheel', handleScroll, { passive: false });
+      disableNormalScrolling();
+      currentSlide = totalSlides - 1; // Set to last slide
+      updateSlidePosition();
+    }
+  });
+
+  function manageVideoPlayback() {
+    for (let i = 0; i < totalSlides; i++) {
+      const video = document.getElementById(`video${i + 1}`);
+      if (i === currentSlide) {
+        video.play();
+      } else {
+        video.pause();
+      }
+    }
+  }
+
+  function showOverlay1(event, videoSrc) {
+    event.preventDefault();
+    overlay.style.display = 'flex';
+    overlayVideo.src = videoSrc.replace('watch?v=', 'embed/');
+  }
+
+  function hideOverlay() {
+    overlay.style.display = 'none';
+    overlayVideo.src = '';
+  }
+
+  document.getElementById('close-overlay').addEventListener('click', hideOverlay);
+
+  window.addEventListener('wheel', handleScroll);
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 200) {
+      // sectionToHide.classList.add('hidden');
+    } else {
+      sectionToHide.classList.remove('hidden');
+    }
+  });
+
+  manageVideoPlayback();
+
+</script>
+
+<script type="text/javascript">
+  function filterImages(category) {
+    const images = document.querySelectorAll('.image-item');
+    let delay = 0;
+
+    images.forEach(image => {
+      image.style.display = 'none';
+      image.style.opacity = '0';
+      image.style.animation = '';
+    });
+
+    images.forEach(image => {
+      if (category === 'all' || image.classList.contains(category)) {
+        image.style.display = 'block';
+        setTimeout(() => {
+          image.style.animation = `slideIn 0.5s ${delay}s forwards`;
+          delay += 0.1;
+        }, 100);
+      }
+    });
+
+    // Scroll to the top of the grid when a filter is applied
+    const imageSection = document.getElementById('imageSection');
+    imageSection.scrollIntoView({ behavior: 'smooth' });
+
+    // Set active class to the clicked filter button
+    const buttons = document.querySelectorAll('.filter-button');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`.filter-button[onclick="filterImages('${category}')"]`).classList.add('active');
+  }
+
+  // Initially show all images without scrolling
+  document.addEventListener('DOMContentLoaded', () => {
+    disableNormalScrolling();
+    window.addEventListener('wheel', handleScroll, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: false });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    const images = document.querySelectorAll('.image-item');
+    images.forEach(image => {
+      image.style.display = 'block';
+      image.style.opacity = '1';
+    });
+  });
+
+  // Handle scroll to make filter buttons non-sticky when user scrolls past the section
+  window.addEventListener('scroll', () => {
+    const filterContainer = document.getElementById('filterContainer');
+    const container1 = document.querySelector('.container1');
+    const container1Rect = container1.getBoundingClientRect();
+
+    if (container1Rect.bottom <= window.innerHeight) {
+      filterContainer.style.position = 'absolute';
+      filterContainer.style.bottom = '0';
+    } else {
+      filterContainer.style.position = 'fixed';
+      filterContainer.style.bottom = '0';
+    }
+  });
+
+  // Use Intersection Observer to show filter buttons when the section is in view
+  const filterContainer = document.getElementById('filterContainer');
+  const imageSection = document.getElementById('imageSection');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        filterContainer.classList.add('visible');
+      } else {
+        filterContainer.classList.remove('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  observer.observe(imageSection);
+
+  // Function to show video overlay
+  function showOverlay(event, youtubeUrl) {
+    event.preventDefault();
+    const videoOverlay = document.getElementById('videoOverlay9');
+    const youtubeVideo = document.getElementById('youtubeVideo9');
+    youtubeVideo.src = youtubeUrl;
+    videoOverlay.classList.add('active');
+  }
+
+  // Function to close video overlay
+  function closeVideo() {
+    const videoOverlay = document.getElementById('videoOverlay9');
+    const youtubeVideo = document.getElementById('youtubeVideo9');
+    youtubeVideo.src = '';
+    videoOverlay.classList.remove('active');
+  }
+
+  // Add click event to each image item to show video overlay
+  document.querySelectorAll('.image-item').forEach(item => {
+    item.addEventListener('click', function (event) {
+      const youtubeUrl = this.dataset.youtube;
+      showOverlay(event, youtubeUrl);
+    });
+  });
+
+  // Close overlay when clicking anywhere on the screen
+  document.getElementById('videoOverlay9').addEventListener('click', function (event) {
+    // Check if the click is on the close button
+    if (event.target !== document.querySelector('.close-btn9')) {
+      closeVideo();
+    }
+  });
+
+
+</script>
+
+<script>
+  const trigger = document.getElementById("trigger");
+  const main = document.getElementById("parent");
+
+  function testFunction(element, callback) {
+    const observer1 = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        callback(entry.intersectionRatio > 0);
+      });
+    }, { root: document.documentElement });
+
+    observer1.observe(element);
+  }
+
+  testFunction(trigger, (visible)=>{
+    console.log("trigger:", visible)
+    if(visible){
+      main.classList.remove("scrolldisable") 
+    }
+  });
+
+  const boundingBox = trigger.getBoundingClientRect();
+
+  if (boundingBox.top >= 0 && boundingBox.left >= 0 && boundingBox.right <= (window.innerWidth || document.documentElement.clientWidth) && boundingBox.bottom <= window.innerHeight) {
+    console.log('Element is in the viewport!');
+  } else {
+    console.log('Element is NOT in the viewport!');
+  }
+</script>
